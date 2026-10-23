@@ -1,0 +1,22 @@
+site_name: "НИР: Динамическое включение в белые списки (TLS-скоринг)"
+site_url: "https://se.ifmo.ru/~s508949/nir-tls-scoring/"
+use_directory_urls: true
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - search.highlight
+
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true  # поддержка LaTeX
+  - tables
+  - admonition
+
+# локальный MathJax, чтобы формулы работали даже при недоступности внешних CDN
+extra_javascript:
+  - javascripts/mathjax.js
+
+# раздельные лицензии на контент и код
+copyright: Контент распространяется под лицензией <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>. Код под лицензией <a href="https://opensource.org/licenses/MIT" target="_blank">MIT</a>.
