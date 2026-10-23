@@ -1,0 +1,57 @@
+name: Build and Deploy to Helios
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Generate Artifacts (P3)
+        run: python scripts/generate_artifacts.py
+
+      - name: Build MkDocs (Strict Mode)
+        run: mkdocs build --strict
+
+      - name: Deploy to Helios via rsync
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: -avz --delete
+          path: site/
+          remote_path: ~/public_html/nir-tls-scoring/
+          remote_host: helios.cs.ifmo.ru
+          remote_port: 2222
+          remote_user: ${{ secrets.HELIOS_USER }}
+          remote_key: ${{ secrets.HELIOS_SSH_KEY }}
+
+      - name: Healthcheck deployment
+        run: |
+          echo "Waiting for Helios to update..."
+          sleep 10
+          # Проверяем код ответа HTTP (должен быть 200)
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://se.ifmo.ru/~s508949/nir-tls-scoring/)
+          if [ "$RESPONSE" -ne 200 ]; then
+            echo "Ошибка: HTTP код $RESPONSE"
+            exit 1
+          fi
+          # Проверяем наличие контрольной строки в HTML
+          curl -s https://se.ifmo.ru/~s508949/nir-tls-scoring/ | grep -q "НИР: Динамическое включение"
+          if [ $? -ne 0 ]; then
+            echo "Ошибка: Контрольная строка не найдена в HTML"
+            exit 1
+          fi
+          echo "✅ Healthcheck пройден успешно!"
