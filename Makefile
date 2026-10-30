@@ -1,11 +1,11 @@
 .PHONY: build clean experiment
 
 experiment:
-	@echo "🚀 Запуск эксперимента..."
+	@echo " Запуск эксперимента..."
 	python scripts/run_experiment.py
 
 build: experiment
-	@echo "🔨 Сборка сайта..."
+	@echo " Сборка сайта..."
 	mkdocs build --strict
 
 clean:

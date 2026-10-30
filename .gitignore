@@ -1,13 +1,36 @@
-   venv/
-   site/
-   __pycache__/
-   .DS_Store
-   *.csv
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.nox/
+
+# MkDocs
+site/
+
+# Сгенерированные артефакты (создаются скриптом при сборке)
+docs/assets/
+docs/includes/
+
+# Данные эксперимента (генерируются скриптом)
+data/results.csv
+data/result.csv
+data/.cache.json
+
+# SSH-ключи (НИКОГДА не коммитить!)
 helios_deploy_key
 helios_deploy_key.pub
-venv/
-site/
-__pycache__/
-*.csv
-data/.cache.json
-.nox/
+
+# ОС
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
