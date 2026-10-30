@@ -5,3 +5,9 @@
    *.csv
 helios_deploy_key
 helios_deploy_key.pub
+venv/
+site/
+__pycache__/
+*.csv
+data/.cache.json
+.nox/
